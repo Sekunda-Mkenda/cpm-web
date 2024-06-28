@@ -14,7 +14,7 @@ const props = defineProps({
 
 <template>
     <div class="">
-        <label class="block text-neutral-500  dark:text-gray mb-1.5 text-[10px]">{{ props.label }}</label>
+        <label class="block text-neutral-800  dark:text-gray mb-1.5 text-[14px]">{{ props.label }}</label>
         <div class="relative">
             <textarea :type="props.type" :placeholder="props.placeholder" :value="modelValue" :rows="rows" :cols="cols"
                 @input="$emit('update:modelValue', $event?.target?.value)" @blur="$emit('blur')"

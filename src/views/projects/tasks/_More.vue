@@ -1,34 +1,34 @@
 <!-- eslint-disable vue/no-textarea-mustache -->
 <template>
     <!-- Project Details -->
-    <div class="grid grid-cols-4 mt-2 mx-2 gap-y-4">
-        <label class="text-sm font-semibold text-neautral-600 "><span class="text-neutral-400">Title</span> : <span
+    <div class="grid grid-cols-4 mt-2 mx-2 gap-4">
+        <label class="text-sm font-semibold text-neautral-600 "><span class="text-neutral-700">Title</span> : <span
                 class="uppercase">{{ task?.title }}</span></label>
-        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">Number</span> : {{
+        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Number</span> : {{
             task?.number }}</label>
 
-        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">Start</span> : {{
+        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Start</span> : {{
             task?.start_date }}</label>
-        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">End</span> : {{
+        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">End</span> : {{
             task?.end_date }}</label>
-        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">Member Assigned</span> :
+        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Member Assigned</span> :
             {{
                 task?.member?.name }}</label>
-        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">Weight</span> : {{
+        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Weight</span> : {{
             task?.weight + "%" }}</label>
-        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">Status</span> : <span
-                class="text-green-400">{{ project?.status }}</span></label>
+        <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Status</span> : <span
+                class="text-green-400">{{ task?.status }}</span></label>
         <div class="col-span-4">
-            <label for="project-description" class="text-neutral-400 mb-2">description</label>
+            <label for="project-description" class="text-neutral-700 mb-2 font-semibold">Description</label>
             <textarea id="project-description" rows="1" class="bg-[#f1f1f1] focus:border-none focus:outline-none p-2 w-full"
-                readonly>{{ project?.description }}</textarea>
+                readonly>{{ task?.description }}</textarea>
         </div>
     </div>
     <h2 class="text-title-md2 font-semibold text-black dark:text-white my-4">
         Task Items
     </h2>
     <!-- Base Table -->
-    <BaseTable :heads="heads" :lists="task?.task_items" :isLoading="project?.isLoading" @refetchData="refreshData"
+    <BaseTable :heads="heads" :lists="task?.task_items" :isLoading="project?.isLoading" @refetchData="refreshData" 
         :isPaginationActive="false" :isSearchActive="false" >
         <template #list-index="{ index }">{{ index + 1 }}</template>
         <template #list-amount="{ list }">

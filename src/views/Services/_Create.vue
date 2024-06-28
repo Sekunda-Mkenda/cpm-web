@@ -20,14 +20,14 @@
                 :errorMessage="errors.ward_or_street" />
 
             <el-form-item label="Region" v-bind="regionProps">
-                <el-select v-model="region" placeholder="Region" style="width: 100%" size="small" filterable>
+                <el-select v-model="region" placeholder="Region" style="width: 100%" filterable>
                     <el-option v-for="option in regions" :key="option.name" :label="option.name"
                         :value="option.name"></el-option>
                 </el-select>
             </el-form-item>
 
             <el-form-item label="District" v-bind="districtProps">
-                <el-select :disabled="districts?.length == 0" v-model="district" size="small" filterable clearable
+                <el-select :disabled="districts?.length == 0" v-model="district" filterable clearable
                     style="width: 100%" placeholder="Select district">
                     <el-option v-for="option in districts" :key="option" :label="option" :value="option"></el-option>
                 </el-select>

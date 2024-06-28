@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, toRefs, computed } from "vue";
 import InputGroup from "../Auths/InputGroup.vue";
-import { list } from "postcss";
 
 const props = defineProps({
   lists: Object,
@@ -80,13 +79,13 @@ watch(noOfEntries, () => {
   <div
     class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
     <div class="max-w-full overflow-x-auto pb-2">
-      <div v-if="isSearchActive" class="flex justify-between items-center mb-5">
+      <div :class="[isSearchActive ? 'justify-between' : 'justify-end']" class="flex items-center mb-5">
         <!-- <div>
           <el-select v-model="noOfEntries" placeholder="No of entries" style="width: 140px">
             <el-option selected v-for="(item, index) in entriesOptions" :key="index" :label="item" :value="item" />
           </el-select>
         </div> -->
-        <InputGroup v-model="searchQuery" :isPrefixIcon="true" label="" placeholder="Search... ">
+        <InputGroup v-if="isSearchActive" v-model="searchQuery" :isPrefixIcon="true" label="" placeholder="Search... ">
           <svg class="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary mt-[2px]" width="18"
             height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"

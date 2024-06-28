@@ -9,6 +9,7 @@ export const useAuthStore = defineStore('auth', () => {
   const token = useCookies(['ACCESS_TOKEN_COOKIE'])
   const userCookie = useCookies(['USER_COOKIE'])
   const user = ref()
+  const isChangePasswordLoading = ref()
 
   //Setters
   const setUser = (data?: any) => (
@@ -19,7 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
   const setToken = (data?: string) => (token.set('ACCESS_TOKEN_COOKIE', data, { path: '/', expires: getDateOneWeekLater() }));
   const setUserId = (data?: string) => (userCookie.set('USER_COOKIE', data, { path: '/', expires: getDateOneWeekLater() }));
   const clearAuthCredentials = () => (setToken(), setUser());
-  const isUserAuthenticated = () => (token.get('ACCESS_TOKEN_COOKIE') == undefined ? false : true)
+  const isUserAuthenticated = () => (token.get('ACCESS_TOKEN_COOKIE') == undefined || token.get('ACCESS_TOKEN_COOKIE') == '' ? false : true)
 
   //Actions
   //Register
@@ -32,6 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
       setUser(response.data.user);
       useAlertStore().setSuccessToast("Registered successfully");
     } catch (error: any) {
+      console.log(error)
       user.value = { isLoading: false };
       const errors: any = error.response.data
       const statusCode: any = error.response.status;
@@ -86,6 +88,41 @@ export const useAuthStore = defineStore('auth', () => {
       useAlertStore().setErrorMessage(error);
     }
   };
+
+  //Login
+  const changePassword = async (data: any) => {
+    isChangePasswordLoading.value = { isLoading: true };
+    try {
+      await ApiService.put("users/change-password", data);
+      //Check if role of the user is not Manager
+      // if (response?.data?.user?.role !== 'Manager') {
+      //   useAlertStore().setErrorToast("Invalid creadentials");
+      //   return null
+      // }
+      //Set user and token after successful login
+      // setToken(response.data.token);
+      // setUser(response.data.user);
+      useAlertStore().setSuccessToast("Password changed succesfully");
+    } catch (error: any) {
+      const errors: any = error.response.data
+      const statusCode: any = error.response.status;
+      isChangePasswordLoading.value = { isLoading: false };
+      switch (statusCode) {
+        case 400:
+          useAlertStore().setErrorToast(errors[Object.keys(errors)[0]][0]);
+          break;
+        case 401:
+          useAlertStore().setErrorToast("Invalid creadentials");
+          break;
+        default:
+          useAlertStore().setErrorToast(
+            "Something went wrong. Please try again later."
+          );
+          break;
+      }
+      useAlertStore().setErrorMessage(error);
+    }
+  };
   //Logout
   const logout = async () => {
     try {
@@ -119,7 +156,8 @@ export const useAuthStore = defineStore('auth', () => {
     setUserId,
     clearAuthCredentials,
     logout,
-    isUserAuthenticated
+    isUserAuthenticated,
+    changePassword,isChangePasswordLoading
   };
 
 })

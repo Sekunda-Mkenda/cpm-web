@@ -20,7 +20,6 @@ import router from './router'
 
 const app = createApp(App)
 
-// eslint-disable-next-line vue/multi-word-component-names
 app.component('pagination');
 
 app.use(createPinia())

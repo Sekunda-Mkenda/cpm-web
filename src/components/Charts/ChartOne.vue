@@ -1,7 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, toRefs, computed } from 'vue'
 // @ts-ignore
 import VueApexCharts from 'vue3-apexcharts'
+
+const props = defineProps(['projectsDistribution'])
+
+const { projectsDistribution } = toRefs(props)
+
+const projectDistrubutionData = computed(() => {
+  const stats = projectsDistribution?.value?.map((item: { count: any; }) => item.count)
+  let data = {
+    series: [
+      {
+        name: 'Project',
+        data: stats
+      }
+    ],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  }
+  return data
+
+})
 
 const chartData = {
   series: [
@@ -10,7 +29,7 @@ const chartData = {
       data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51]
     }
   ],
-  labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 }
 
 const chart = ref(null)
@@ -119,20 +138,13 @@ const apexOptions = {
 
 <template>
   <div
-    class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8"
-  >
-  <div>
-    <h4 class="text-xl font-bold text-black dark:text-white">Projects distribution</h4>
-  </div>
+    class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
+    <div>
+      <h4 class="text-xl font-bold text-black dark:text-white">Projects distribution</h4>
+    </div>
     <div>
       <div id="chartOne" class="-ml-5">
-        <VueApexCharts
-          type="area"
-          height="350"
-          :options="apexOptions"
-          :series="chartData.series"
-          ref="chart"
-        />
+        <VueApexCharts type="area" height="350" :options="apexOptions" :series="projectDistrubutionData.series" ref="chart" />
       </div>
     </div>
   </div>

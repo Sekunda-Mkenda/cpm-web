@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, toRefs } from 'vue'
 // @ts-ignore
 import VueApexCharts from 'vue3-apexcharts'
 
-const chartData = {
-  series: [
-    {
-      name: 'Revenue',
-      data: [13, 23, 20, 8, 13, 27, 15]
-    }
-  ],
-  labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7']
-}
+const props = defineProps(['recentProjects'])
+
+const { recentProjects } = toRefs(props)
+
+
+const chartData = computed(() => {
+  return {
+    series: [
+      {
+        name: '',
+        data: recentProjects?.value?.map((project: { percentage: String }) => project.percentage)
+      }
+    ],
+    labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7']
+  }
+})
 
 const chart = ref(null)
 
@@ -55,7 +62,7 @@ const apexOptions = {
   },
   xaxis: {
     type: 'category',
-    categories: chartData.labels
+    categories: chartData.value.labels
   },
   legend: {
     position: 'top',
@@ -75,27 +82,21 @@ const apexOptions = {
 </script>
 
 <template>
-  <div
-    class="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4"
-  >
+
+  <div v-if="chartData"
+    class="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
     <div class="mb-4 justify-between gap-4 sm:flex">
       <div>
         <h4 class="text-xl font-bold text-black dark:text-white">Progress of recent Projects</h4>
       </div>
       <div>
-        
+
       </div>
     </div>
 
     <div>
       <div id="chartTwo" class="-ml-5 -mb-9">
-        <VueApexCharts
-          type="bar"
-          height="335"
-          :options="apexOptions"
-          :series="chartData.series"
-          ref="chart"
-        />
+        <VueApexCharts type="bar" height="335" :options="apexOptions" :series="chartData.series" ref="chart" />
       </div>
     </div>
   </div>

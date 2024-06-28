@@ -8,4 +8,14 @@ const getDateOneWeekLater = () => {
     return oneWeekLater;
 }
 
-export { getDateOneWeekLater }
+// Formatting date
+const formatDate = (date: string | number | Date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');  // getMonth is zero-based, so we add 1
+    const day = String(d.getDate()).padStart(2, '0');  // getDate gives the day of the month
+    return `${year}-${month}-${day}`;
+};
+
+
+export { getDateOneWeekLater, formatDate }

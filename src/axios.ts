@@ -11,10 +11,14 @@ axiosInstance.interceptors.request.use(
     (config: any) => {
         // Create headers object if not present
         config.headers = config.headers || {}
+        const urlEndName = config.url.split('/').pop()
+        if (!['registration', 'login'].includes(urlEndName)) {
+            config.headers['Authorization'] = `Token ${token.get('ACCESS_TOKEN_COOKIE')}`
+        }
         //Attaching important headers to request
         config.headers['Content-Type'] = 'application/json'
         config.headers['Accept'] = 'application/json'
-        config.headers['Authorization'] = `Token ${token.get('ACCESS_TOKEN_COOKIE')}`
+
         return config
     },
     (error: Error) => {

@@ -85,7 +85,7 @@ onUnmounted(() => {
                 class=" bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto relative">
                 <div
                     class="w-full py-2 bg-darkColor flex justify-between items-center px-6 bg-primary">
-                    <h4 class="text-neutral-900 uppercase  font-[600]">{{ modalTitle }}</h4>
+                    <h4 class="text-white uppercase  font-[600]">{{ modalTitle }}</h4>
                     <div @click="close"
                         class="rounded-full h-6 w-6 bg-white px-1 cursor-pointer flex justify-center items-center focus:opacity-75">
                         <Close fillColor="#8A1A56" :size="18" />

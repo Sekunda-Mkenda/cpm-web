@@ -4,22 +4,22 @@
     <BreadcrumbDefault :pageTitle="pageTitle" />
     <!-- Project Details -->
     <div class="grid grid-cols-4 my-5 mx-2 gap-y-4">
-      <label class="text-sm font-semibold text-neautral-600 uppercase"><span
-          class="text-neutral-400 lowercase">Title</span> : {{ project?.title }}</label>
-      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">budget</span> : {{
+      <label class="text-sm font-semibold text-neautral-600"><span
+          class="text-neutral-700">Title</span > : <span class="uppercase" >{{ project?.title }}</span></label>
+      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Budget</span> : {{
         project?.budget }}</label>
-      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">start</span> : {{
+      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Start Date</span> : {{
         project?.start_date }}</label>
-      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">end</span> : {{
+      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">End Date</span> : {{
         project?.end_date }}</label>
-      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">region</span> : {{
+      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Region</span> : {{
         project?.region }}</label>
-      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">district</span> : {{
+      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">District</span> : {{
         project?.district }}</label>
-      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-400">status</span> : <span
+      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Status</span> : <span
           class="text-green-400">{{ project?.status }}</span></label>
       <div class="col-span-4">
-        <label for="project-description" class="text-neutral-400 mb-2">description</label>
+        <label for="project-description" class="text-neutral-700 mb-2 font-semibold">Description</label>
         <textarea id="project-description" rows="3" class=" focus:border-none focus:outline-none p-2 w-full"
           readonly>{{ project?.description }}</textarea>
       </div>
@@ -28,7 +28,7 @@
       Tasks
     </h2>
     <!-- Base Table -->
-    <BaseTable :heads="heads" :lists="project?.tasks" :isLoading="project?.isLoading" @refetchData="refreshData" :isPaginationActive="false" >
+    <BaseTable :heads="heads" :lists="project?.tasks" :isLoading="project?.isLoading" @refetchData="refreshData" :isPaginationActive="false" :isSearchActive="false" >
       <template #action-buttons>
         <BaseButton @click="isCreateModalActive = true">
           <div class="flex items-center">
@@ -68,6 +68,12 @@
     maxWidthValue="1200px">
     <ShowMore @closeModalAfterSubmit="isShowMoreModalActive = false; fetchData(route.params['id'])" :task="selectedTask" />
   </BaseModal>
+  
+  <!--  Update Task model -->
+  <BaseModal :show="isUpdateModalActive" @close="isUpdateModalActive = false" modalTitle="Update task"
+    maxWidthValue="1200px">
+    <Update @closeModalAfterSubmit="isUpdateModalActive = false; fetchData(route.params['id'])" :task="selectedTask" />
+  </BaseModal>
 
   <!-- Change Status Modal -->
   <!-- <BaseModal :show="isChangeStatusModalActive" @close="isChangeStatusModalActive = false"
@@ -87,6 +93,7 @@ import { ref, onMounted } from 'vue'
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import Create from './_Create.vue'
+import Update from './_Update.vue'
 import ShowMore from './_More.vue'
 import { useTaskStore } from '@/stores/tasks';
 import { storeToRefs } from 'pinia';
@@ -119,12 +126,14 @@ const handleViewMore = (task: any) => {
 }
 
 const handleDelete = async (id: string) => {
-  // await useTaskStore().deleteTask(id)
-  await fetchData(resourceUrl.value)
+  if(confirm("Proceed to delete this task?")) {
+    await useTaskStore().deleteTask(id)
+    await fetchData(route.params['id'])
+  }
 }
 
 const handleUpdate = (data: any) => {
-  product.value = data
+  selectedTask.value = data
   isUpdateModalActive.value = true
 }
 

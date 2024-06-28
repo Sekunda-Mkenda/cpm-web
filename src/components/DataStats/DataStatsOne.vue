@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, toRefs } from 'vue'
+const props = defineProps(['summary'])
 
+const { summary } = toRefs(props)
 const cardItems = ref([
   {
     icon: ``,
     title: 'Total Projects',
-    total: '34',
+    total: `${summary?.value?.projects_count}`,
   },
   {
     icon: `<svg
@@ -30,7 +32,7 @@ const cardItems = ref([
             />
           </svg>`,
     title: 'In progress Projects',
-    total: '20',
+    total:  `${summary?.value?.in_progress_projects_count}`,
   },
   {
     icon: `<svg
@@ -51,7 +53,7 @@ const cardItems = ref([
             />
           </svg>`,
     title: 'Completed Projects',
-    total: '14',
+    total:   `${summary?.value?.closed_projects_count}`,
   },
   {
     icon: `<svg
@@ -76,7 +78,7 @@ const cardItems = ref([
             />
           </svg>`,
     title: 'Total Members',
-    total: '16',
+    total:   `${summary?.value?.manager_members_count}`,
   }
 ])
 </script>
@@ -100,7 +102,7 @@ const cardItems = ref([
 
     <div class="mt-4 flex items-end justify-between">
       <div>
-        <h4 class="text-title-md font-bold text-black dark:text-white">{{ item.total }}</h4>
+        <h4 class="text-title-md font-bold text-black dark:text-white">{{ item?.total }}</h4>
         <span class="text-sm font-medium">{{ item.title }}</span>
       </div>
     </div>

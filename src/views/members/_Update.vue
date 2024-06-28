@@ -76,7 +76,12 @@
                     </el-select>
                 </el-form-item>
 
-                <label class="text-xs text-neutral-800 text-[16px] mt-2 dark:text-gray col-span-3">Profile Image</label>
+                <label class="text-[14px] text-neutral-600 dark:text-gray col-span-3 mt-2">Existing Profile Image</label>
+                <div class="col-span-3 mb-4" >
+                    <img :src="member?.profile" class="w-[100px] h-[100px] object-cover" alt="member-profile-image">
+                </div>
+
+                <label class="text-[14px] text-neutral-600 dark:text-gray col-span-3">New Profile Image</label>
                 <div class="col-span-3 gap-4">
                     <div v-for="(item, index) in imagesList" :key="index"
                         class="relative flex justify-center flex-col items-center">
@@ -86,6 +91,7 @@
                             class="absolute top-0 right-0 cursor-pointer" />
                     </div>
                 </div>
+     
             <div v-if="imagesList.length < 1" class="flex justify-center col-span-3 ">
                 <FilePicker @getFileData="getImageData" :multiple="true" v-model="images" v-bind="imagesProps"
                     :error="errors.images || customValidationMessage"
@@ -96,8 +102,8 @@
                 </FilePicker>
             </div>
             <div class="col-span-3 mt-1">
-                <BaseButton type="submit" label="Create" customClasses="w-full"
-                    :isLoading="useMemberStore()?.members?.isLoading" loading-text="Creating" />
+                <BaseButton type="submit" label="Update" customClasses="w-full"
+                    :isLoading="useMemberStore()?.members?.isLoading" loading-text="Updating..." />
             </div>
         </div>
     </el-form>
@@ -105,7 +111,7 @@
 
 <script lang="ts" setup>
 import FilePicker from '@/components/Forms/FilePicker.vue'
-import { watch, ref } from 'vue'
+import { watch, ref, watchEffect, toRefs } from 'vue'
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { regions } from '@/utils/tanzania_regions'
@@ -116,7 +122,11 @@ import { useAlertStore } from '@/stores/alert';
 import { ref as yupRef } from 'yup'
 import { useAuthStore } from '@/stores/auth';
 import  { useMemberStore } from '@/stores/members';
+import { getStaticAssetUrl } from '@/utils/link_generators';
 
+const props  = defineProps(['member'])
+
+const { member } = toRefs(props)
 const emits = defineEmits(['closeModalAfterSubmit'])
 const districts = ref<string[]>([])
 const imagesList = ref<{ image: string, name: string }[]>([])
@@ -130,9 +140,19 @@ const { defineField, handleSubmit, resetForm, errors, setFieldError, setFieldVal
         mobile: yup.string().required().min(9).label('Mobile'),
         email: yup.string().email().required().label('email'),
         gender: yup.string().required().label('gender'),
-        images: yup.string().label('Profile'),
+        images: yup.string().required().label('Profile'),
     }),
 });
+
+watchEffect(()=> {
+    setFieldValue('first_name', member?.value?.first_name ?? 'Loading...')
+    setFieldValue('middle_name', member?.value?.middle_name ?? 'Loading...')
+    setFieldValue('last_name', member?.value?.last_name ?? 'Loading...')
+    setFieldValue('mobile', member?.value?.mobile.substring(3) ?? 'Loading...')
+    setFieldValue('email', member?.value?.email  ?? 'Loading...')
+    setFieldValue('gender', member?.value?.gender  ?? 'Loading...')
+    setFieldValue('images', member?.value?.profile  ?? 'Loading...')
+})
 
 const getImageData = ({ fileData, fileName }: { fileData: any, fileName: any }) => {
     const isExists = imagesList.value.some(item => (item.name === fileName.value))
@@ -175,11 +195,13 @@ const [images, imagesProps] = defineField('images')
 
 
 const onSubmit = handleSubmit(async (values) => {
-    values['profile'] = imagesList.value[0].image
+    if(imagesList.value[0]) {
+        values['profile'] = imagesList.value[0].image
+    }
     values['mobile'] = '255' + values['mobile']
     delete values['images']
     //Submit datra to api
-    await useMemberStore().createMember(values)
+    await useMemberStore().updateMember(values, member?.value.id)
     if (!useAlertStore().errorMessage) {
         resetForm()
         emits('closeModalAfterSubmit')

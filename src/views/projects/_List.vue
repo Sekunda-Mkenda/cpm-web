@@ -30,10 +30,16 @@
     </BaseTable>
   </DefaultLayout>
 
-  <!-- Update Projects -->
+  <!-- Create Projects -->
   <BaseModal :show="isCreateModalActive" @close="isCreateModalActive = false" modalTitle="create project"
-    maxWidthValue="800px">
+    maxWidthValue="900px">
     <Create @closeModalAfterSubmit="isCreateModalActive = false; fetchData(resourceUrl)" />
+  </BaseModal>
+
+  <!-- Update Projects -->
+  <BaseModal :show="isUpdateModalActive" @close="isUpdateModalActive = false" modalTitle="update project"
+    maxWidthValue="900px">
+    <Update @closeModalAfterSubmit="isUpdateModalActive = false; fetchData(resourceUrl)" :project="selectedProject" />
   </BaseModal>
 
   <!-- Change Status Modal -->
@@ -52,6 +58,7 @@ import { ref, onMounted } from 'vue'
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import Create from './_Create.vue'
+import Update from './_Update.vue'
 import { useProjectStore } from '@/stores/projects';
 import { storeToRefs } from 'pinia';
 import BaseButtonSmall from '@/components/Buttons/BaseButtonSmall.vue';
@@ -67,7 +74,7 @@ const isCreateModalActive = ref(false)
 const isChangeStatusModalActive = ref(false)
 const isUpdateModalActive = ref(false)
 const resourceUrl = ref<string>('manager/projects')
-const product = ref()
+const selectedProject = ref()
 const selectedStatus = ref<string>('')
 const projectStatusOptions = ['In Progress', 'Closed', 'Pending']
 const selectedProjectId = ref('')
@@ -78,7 +85,7 @@ const handleDelete = async (id: string) => {
 }
 
 const handleUpdate = (data: any) => {
-  product.value = data
+  selectedProject.value = data
   isUpdateModalActive.value = true
 }
 

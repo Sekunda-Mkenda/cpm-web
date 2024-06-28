@@ -13,13 +13,13 @@ const props = defineProps({
 
 <template>
   <div class="">
-    <label class="block text-neutral-500  dark:text-gray mb-1.5 text-[10px]">{{ props.label }}</label>
+    <label class="block text-neutral-800  dark:text-gray mb-1.5 text-[13px]">{{ props.label }}</label>
     <div class="relative">
       <input :type="props.type" :placeholder="props.placeholder" :value="modelValue" :step="inputTypeNumberStepper"
         :style="{ 'padding-left': leftPadding ? leftPadding : '' }"
         @input="$emit('update:modelValue', $event?.target?.value)" @blur="$emit('blur')"
         :class="[isPrefixIcon ? 'pl-8 pr-4' : 'pl-3 pr-4', errorMessage ? 'border-red dark:border-red' : 'border-stroke']"
-        class="w-full rounded-[5px] border py-[2px] bg-transparent outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary text-black dark:text-white" />
+        class="w-full rounded-[5px] border py-[4px] bg-transparent outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary text-black dark:text-white" />
 
       <span class="absolute left-2 top-[3px] flex">
         <slot></slot>
@@ -35,12 +35,10 @@ const props = defineProps({
 
 <style scoped>
 ::placeholder {
-  font-size: 14px;
-  /* color: #F5B001 */
+  font-size: 16px;
 }
 
 .el-form-item {
-
   font-size: 200px;
 }
 </style> 

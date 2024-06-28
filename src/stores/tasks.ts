@@ -6,6 +6,7 @@ import { useAlertStore } from './alert'
 export const useTaskStore = defineStore('tasks', () => {
     const tasks = ref()
     const project = ref()
+    const max_tasks_percentage = ref()
     const managerMembers = ref()
 
     /*==============================Tasks==============================*/
@@ -89,6 +90,32 @@ export const useTaskStore = defineStore('tasks', () => {
             useAlertStore().setErrorMessage(error);
         }
     }
+    const getProjectMaxPercentage = async (id: string) => {
+        // tasks.value = { isLoading: true };
+        try {
+            const response: any = await ApiService.get(`project/${id}/max-percentage`);
+            console.log(response.data)
+            max_tasks_percentage.value = response.data.max_percentage
+        } catch (error: any) {
+            // tasks.value = { isLoading: false };
+            const statusCode: any = error.response.status;
+            switch (statusCode) {
+                case 404:
+                    useAlertStore().setErrorToast("The requested resource is not found on server");
+                    break;
+                case 401:
+                case 403:
+                    useAlertStore().setErrorToast("Unauthenticated!");
+                    break;
+                default:
+                    useAlertStore().setErrorToast(
+                        "Something went wrong. Please try again later."
+                    );
+                    break;
+            }
+            useAlertStore().setErrorMessage(error);
+        }
+    }
 
     const createTasks = async (data: any) => {
         tasks.value = { isLoading: true };
@@ -98,7 +125,6 @@ export const useTaskStore = defineStore('tasks', () => {
             useAlertStore().setSuccessToast(toastMessage)
             tasks.value = response.data.data
         } catch (error: any) {
-            console.log(error)
             tasks.value = { isLoading: false };
             const errors = error.response.data
             const statusCode: any = error.response.status;
@@ -123,15 +149,16 @@ export const useTaskStore = defineStore('tasks', () => {
         tasks.value = { isLoading: true };
         try {
             const response: any = await ApiService.put('tasks/' + id, data);
-            const toastMessage = 'Project updated successfully'
+            const toastMessage = 'Task updated successfully'
             useAlertStore().setSuccessToast(toastMessage)
             tasks.value = response.data.data
         } catch (error: any) {
+            console.log(error)
             tasks.value = { isLoading: false };
             const errors = error.response.data
             const statusCode: any = error.response.status;
             switch (statusCode) {
-                case 422:
+                case 400:
                     useAlertStore().setErrorToast(errors[Object.keys(errors)[0]]);
                     break;
                 case 401:
@@ -177,15 +204,14 @@ export const useTaskStore = defineStore('tasks', () => {
         }
     }
 
-    const deleteProject = async (id: string) => {
+    const deleteTask = async (id: string) => {
         tasks.value = { isLoading: true };
         try {
-            const response: any = await ApiService.delete('tasks/' + id,);
-            const toastMessage = "Project deleted successfully"
+            const response: any = await ApiService.delete('tasks/' + id);
+            const toastMessage = "Task deleted successfully"
             useAlertStore().setSuccessToast(toastMessage)
             tasks.value = response.data.data
         } catch (error: any) {
-            console.log(error)
             tasks.value = { isLoading: false };
             const statusCode: any = error.response.status;
             switch (statusCode) {
@@ -213,9 +239,11 @@ export const useTaskStore = defineStore('tasks', () => {
         getProjectById,
         createTasks,
         updateTasks,
-        deleteProject,
+        deleteTask,
         changeTaskstatus,
         getManagerMembers,
-        managerMembers
+        managerMembers,
+        getProjectMaxPercentage,
+        max_tasks_percentage
     }
 })

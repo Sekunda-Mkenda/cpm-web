@@ -6,7 +6,7 @@
       <template #action-buttons>
         <BaseButton @click="isCreateModalActive = true">
           <div class="flex items-center">
-            <CircleAddIcon :size="18" /> <span class="ms-1">Create</span>
+            <CircleAddIcon  :size="18" /> <span class="ms-1">Create</span>
           </div>
         </BaseButton>
       </template>
@@ -25,7 +25,7 @@
             @click="isChangeStatusModalActive = true; selectedProjectId = list.id; selectedStatus = list.status"
             label="Status" customClasses="bg-blue text-white">
           </BaseButtonSmall> -->
-          <BaseButtonSmall @click="handleUpdate(list)">
+          <BaseButtonSmall @click="selectedMember=list; isUpdateModalActive = true">
             <UpdateIcon />
           </BaseButtonSmall>
           <BaseButtonSmall @click="handleDelete(list.id)" customClasses="bg-red">
@@ -41,6 +41,12 @@
     maxWidthValue="800px">
     <Create @closeModalAfterSubmit="isCreateModalActive = false; fetchData(resourceUrl)" />
   </BaseModal>
+
+  <!-- Update members -->
+  <BaseModal :show="isUpdateModalActive" @close="isUpdateModalActive = false" modalTitle="update member"
+    maxWidthValue="800px">
+    <Update @closeModalAfterSubmit="isUpdateModalActive = false; fetchData(resourceUrl)" :member="selectedMember" />
+  </BaseModal>
 </template>
 
 <script setup lang="ts">
@@ -48,6 +54,7 @@ import { ref, onMounted } from 'vue'
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import Create from './_Create.vue'
+import Update from './_Update.vue'
 import { useMemberStore } from '@/stores/members';
 import { storeToRefs } from 'pinia';
 import BaseButtonSmall from '@/components/Buttons/BaseButtonSmall.vue';
@@ -67,15 +74,13 @@ const product = ref()
 const selectedStatus = ref<string>('')
 const projectStatusOptions = ['In Progress', 'Closed', 'Pending']
 const selectedProjectId = ref('')
+const selectedMember = ref('')
 
 const handleDelete = async (id: string) => {
-  await useMemberStore().deleteMember(id)
-  await fetchData(resourceUrl.value)
-}
-
-const handleUpdate = (data: any) => {
-  product.value = data
-  isUpdateModalActive.value = true
+  if(confirm("Are you sure you want to delete this member?")) {
+    await useMemberStore().deleteMember(id)
+    await fetchData(resourceUrl.value)
+  }
 }
 
 const refreshData = async (paginationUrl: string) => {

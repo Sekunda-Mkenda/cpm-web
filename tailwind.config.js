@@ -26,7 +26,7 @@ export default {
         bodydark: '#AEB7C0',
         bodydark1: '#DEE4EE',
         bodydark2: '#8A99AF',
-        primary: '#F5B001',
+        primary: '#121481',
         secondary: '#101928',
         stroke: '#E2E8F0',
         gray: '#EFF4FB',

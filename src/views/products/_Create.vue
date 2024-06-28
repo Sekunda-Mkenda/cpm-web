@@ -7,7 +7,7 @@
 
             <el-form-item label="category" v-bind="categoryProps">
                 <el-select v-model="category" :loading="categories?.isLoading" placeholder="category"
-                    style="width: 100%" size="small" filterable>
+                    style="width: 100%" filterable>
                     <el-option v-for="option in categories.data" :key="option.name" :label="option.name"
                         :value="option.id"></el-option>
                 </el-select>

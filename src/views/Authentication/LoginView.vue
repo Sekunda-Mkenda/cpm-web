@@ -2,8 +2,8 @@
     <DefaultAuthCard subtitle="Welcome back" title="Sign In">
         <form @submit.prevent="handleLogin">
             <InputGroup v-model="mobile" v-bind="mobileProps" :errorMessage="errors.mobile" label="Mobile" type="number"
-                leftPadding="75px" placeholder="744968968" :isPrefixIcon="true" class="mb-1">
-                <div class="flex items-center">
+                leftPadding="75px" placeholder="744968968" :isPrefixIcon="true" class="mb-2">
+                <div class="flex items-center mt-[2px]">
                     <svg class="fill-current text-[#8888]" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                         viewBox="0 0 24 24">
                         <path fill=""
@@ -26,13 +26,13 @@
                     </g>
                 </svg>
             </InputGroup>
-
+<!-- 
             <div class=" text-end mt-2">
                 <p class="font-medium text-xs">
                     Forgort Password?
                     <router-link to="/auth/signup" class="text-primary">Reset here</router-link>
                 </p>
-            </div>
+            </div> -->
 
             <div class="mb-5 mt-6">
                 <BaseButton :isLoading="useAuthStore()?.user?.isLoading" class="w-full text-white" label="Login"
@@ -76,5 +76,3 @@ const handleLogin = handleSubmit(async (values) => {
     useAlertStore().setErrorMessage()
 });
 </script>
-
-<style lang="scss" scoped></style>

@@ -46,7 +46,7 @@
 
       <InputGroup v-model="mobile" v-bind="mobileProps" :errorMessage="errors.mobile" label="Mobile" type="number"
         leftPadding="75px" placeholder="744968968" :isPrefixIcon="true" class="mb-1">
-        <div class="flex items-center">
+        <div class="flex items-center mt-[2px]">
           <svg class="fill-current text-[#8888]" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
             viewBox="0 0 24 24">
             <path fill=""
@@ -85,7 +85,7 @@
 
       <InputGroup v-model="passwordConfirmation" v-bind="passwordConfirmationProps"
         :errorMessage="errors.passwordConfirmation" label="Re-type Password" type="password"
-        placeholder="Re-enter your password" :isPrefixIcon="true" class="mb-1">
+        placeholder="Re-enter your password" :isPrefixIcon="true" class="mb-2">
         <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <g opacity="0.5">

@@ -17,14 +17,14 @@ const props = defineProps({
 
 <template>
     <button v-if="!isLoading" :type="props.type"
-        class="inline-flex items-center justify-center gap-2.5 py-2 text-center font-medium hover:bg-opacity-90 lg:px-4 bg-primary rounded-md text-neutral-800 cursor-pointer text-sm uppercase"
+        class="inline-flex items-center justify-center gap-2.5 py-2 text-center font-medium hover:bg-opacity-90 lg:px-4 bg-primary rounded-md text-white cursor-pointer text-sm uppercase"
         :class="props.customClasses">
         <slot>
             {{ props.label }}
         </slot>
     </button>
     <button v-else type="button" disabled
-        class="inline-flex items-center justify-center gap-2.5 py-2 text-center font-medium bg-opacity-100 lg:px-4 bg-primary rounded-md text-neutral-800 cursor-not-allowed text-sm"
+        class="inline-flex items-center justify-center gap-2.5 py-2 text-center font-medium bg-opacity-100 lg:px-4 bg-primary rounded-md text-white cursor-not-allowed text-sm"
         :class="props.customClasses">
         <slot>
             {{ loadingText }}

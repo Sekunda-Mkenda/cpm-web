@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { useAlertStore } from '@/stores/alert';
+import { useAuthStore } from '@/stores/auth';
 import { onClickOutside } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router';
 
 const userCookie = useCookies(['USER_COOKIE'])
+const router = useRouter()
 
 const user = computed(()=> {
   return userCookie.get('USER_COOKIE')
@@ -15,6 +19,12 @@ const dropdownOpen = ref(false)
 onClickOutside(target, () => {
   dropdownOpen.value = false
 })
+
+const handleLogout = ()=> {
+  useAuthStore().clearAuthCredentials()
+  router.push({name: 'login', replace: true})
+  useAlertStore().setSuccessToast('You have logged out successfully')
+}
 </script>
 
 <template>
@@ -25,8 +35,8 @@ onClickOutside(target, () => {
       @click.prevent="dropdownOpen = !dropdownOpen"
     >
       <span class="hidden text-right lg:block">
-        <span class="block text-sm font-medium text-black dark:text-white">{{ `${user.first_name} ${user.last_name}` }}</span>
-        <span class="block text-xs font-medium">{{ user.role }}</span>
+        <span class="block text-sm font-medium text-black dark:text-white">{{ `${user?.first_name} ${user?.last_name}` }}</span>
+        <span class="block text-xs font-medium">{{ user?.role }}</span>
       </span>
 
       <span class="h-16 w-16 rounded-full">
@@ -84,7 +94,7 @@ onClickOutside(target, () => {
         </li>
        
       </ul>
-      <button
+      <button @click="handleLogout"
         class="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
       >
         <svg
