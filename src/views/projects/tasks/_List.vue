@@ -6,8 +6,8 @@
     <div class="grid grid-cols-4 my-5 mx-2 gap-y-4">
       <label class="text-sm font-semibold text-neautral-600"><span
           class="text-neutral-700">Title</span > : <span class="uppercase" >{{ project?.title }}</span></label>
-      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Budget</span> : {{
-        project?.budget }}</label>
+      <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Budget</span> : 
+        {{project?.budget  }}</label>
       <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">Start Date</span> : {{
         project?.start_date }}</label>
       <label class="text-sm font-semibold text-neautral-600"><span class="text-neutral-700">End Date</span> : {{

@@ -103,7 +103,7 @@ watch(noOfEntries, () => {
       <table class="w-full table-auto">
         <thead>
           <tr class="bg-bodydark text-left dark:bg-meta-4">
-            <th class="min-w-[120px] py-2 px-4 text-black dark:text-white uppercase font-bold text-sm" v-for=" (head, index)
+            <th class="text-start py-2 px-4 text-black dark:text-white uppercase font-bold text-sm" v-for=" (head, index)
               in heads" :key="index">
               <slot :name="'head-' + head?.name">{{ head.name }}</slot>
             </th>
@@ -122,7 +122,7 @@ watch(noOfEntries, () => {
               </div>
             </td>
           </tr>
-          <tr v-for="(list, index) in tableData" :key="index" class="border-b-[1px] border-stroke">
+          <tr v-for="(list, index) in tableData" :key="index" class="border-b-[1px] border-stroke w-full">
             <td class="py-2 px-4" v-for="head, i in heads" :key="i">
               <slot :list="list" :index="index" :name="'list-' + head.value">{{ list[head.value] }}</slot>
             </td>

@@ -44,9 +44,7 @@ const user = computed(() => {
           </div>
         </div>
       </div>
-
     </div>
-
   </DefaultLayout>
 
   <!-- Create Projects -->

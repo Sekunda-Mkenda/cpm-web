@@ -40,6 +40,11 @@
         <template #list-unit="{ list }">
             <h5>{{ list.unit ? list.unit : 'N/A' }}</h5>
         </template>
+        <template #list-description="{ list }">
+          <div class="w-50" >
+            <textarea cols="20" class="border-[1px] border-stroke rounded-sm p-2" >{{ list.description }}</textarea>
+          </div>
+        </template>
         <template #list-attachment="{ list }">
             <p v-if="list.attachment" > <a :href="list.attachment" target="_blank" class="underline text-blue-600" >attachment</a> </p>
             <p v-else class="text-sm" >N/A</p>
@@ -84,7 +89,6 @@ const props = defineProps({task: {type: Object}})
 
 const taskStore = useTaskStore()
 const route = useRoute()
-const { tasks, project } = storeToRefs(taskStore)
 const { task } = toRefs(props)
 
 const pageTitle = ref('Project Details')
@@ -94,9 +98,6 @@ const isUpdateModalActive = ref(false)
 const isShowMoreModalActive = ref(false)
 const resourceUrl = ref<string>('manager/tasks ')
 const product = ref()
-const selectedStatus = ref<string>('')
-const projectStatusOptions = ['In Progress', 'Closed', 'Pending']
-const selectedTasksId = ref('')
 const selectedTask = ref<any>('')
 
 const handleViewMore = (task: any) => {
@@ -141,6 +142,7 @@ const heads = [
     { name: 'amount (TSh)', value: 'amount' },
     { name: 'quantity', value: 'quantity' },
     { name: 'unit', value: 'unit' },
+    { name: 'description', value: 'description' },
     { name: 'attachment', value: 'attachment' },
 ]
 </script>
